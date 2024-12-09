@@ -43,9 +43,7 @@ export const Counter = () => {
         <Wrapper>
 
             <Window>
-                <MaxValue>Max value: {currentRandomValue}</MaxValue>
                 <WindowNumber value={count} maxValue={currentRandomValue}>{count}</WindowNumber>
-                <MaxLine value={count} maxValue={currentRandomValue}></MaxLine>
             </Window>
 
             <Controllers>
@@ -60,30 +58,10 @@ export const Counter = () => {
     );
 };
 
-const MaxValue = styled.span`
-    font-size: 30px;
-`
 
 const WindowNumber = styled.span<{ value: number, maxValue: number }>`
     font-size: 80px;
-    color: ${props => props.value === props.maxValue ? 'red' : 'black'};
+    color: ${props => props.value === props.maxValue ? 'red' : 'cornflowerblue'};
 `
 
-const MaxLine = styled.span<{ value: number, maxValue: number }>`
-    width: 80%;
-    height: 5px;
-    border: 2px solid violet;
-    position: relative;
-    
-    &::before {
-        content: '';
-        transition: .2s ease-in-out;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: ${props => props.value / props.maxValue * 100}%;
-        background-color: brown;
-        position: absolute;
-    }
-`
 

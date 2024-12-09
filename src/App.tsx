@@ -9,8 +9,8 @@ function App() {
 
     return (
         <AppStyled>
-            <Counter/>
             <Settings/>
+            <Counter/>
         </AppStyled>
     );
 }

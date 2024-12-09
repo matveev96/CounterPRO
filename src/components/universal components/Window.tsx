@@ -19,7 +19,7 @@ const WindowStyled = styled.div`
     height: 50%;
     border: 3px solid cornflowerblue;
     border-radius: 10px;
-    background-color: aqua;
+    background-color: gainsboro;
     color: black;
     font-size: 40px;
     display: flex;

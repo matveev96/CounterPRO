@@ -1,5 +1,4 @@
 import React, {ReactNode} from 'react';
-import {UniversalButton} from "./UniversalButton";
 import styled from "styled-components";
 
 type ButtonsProps = {
@@ -8,13 +7,13 @@ type ButtonsProps = {
 
 export const Controllers = (props: ButtonsProps) => {
     return (
-        <ControllersWrapper>
+        <ControllersStyled>
             {props.children}
-        </ControllersWrapper>
+        </ControllersStyled>
     );
 };
 
-const ControllersWrapper = styled.div`
+const ControllersStyled = styled.div`
     margin: 20px 0;
     width: 80%;
     height: 30%;
