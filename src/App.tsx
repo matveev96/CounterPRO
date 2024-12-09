@@ -1,16 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import styled from "styled-components";
 import {Counter} from "./components/Counter";
-import {Wrapper} from "./components/universal components/Wrapper";
 import {Settings} from "./components/Settings";
 
+export type ValueType = {
+    startValue: number,
+    maxValue: number
+}
+
 function App() {
+    const [value, setValue] = useState<ValueType>({"startValue": 0, "maxValue": 1})
+    console.log(value)
 
     return (
         <AppStyled>
-            <Settings/>
-            <Counter/>
+            <Settings value={value} setValue={setValue}/>
+            <Counter objectValue={value}/>
         </AppStyled>
     );
 }

@@ -4,21 +4,25 @@ import {Controllers} from "./universal components/Controllers";
 import {Window} from "./universal components/Window";
 import {Wrapper} from "./universal components/Wrapper";
 import {UniversalButton} from "./universal components/UniversalButton";
+import {ValueType} from "../App";
 
-export const Counter = () => {
-    const min = Math.ceil(1);
-    const max = Math.floor(10);
-    let randomNum = Math.floor(Math.random() * (max - min) + min)
+type CounterPropsType = {
+    objectValue: ValueType
+}
 
-    const [count, setCount] = useState<number>(0)
-    const randomRef =useRef<number>(randomNum)
+
+export const Counter = ({objectValue}: CounterPropsType) => {
+
+
+    const [count, setCount] = useState<number>(objectValue.startValue)
+
 
     useEffect(() => {
         const valueToString = localStorage.getItem("counter");
         if (valueToString) {
             const valueToNum = JSON.parse(valueToString)
             setCount(valueToNum)
-            randomNum = valueToNum
+
         }
     }, []);
 
@@ -26,30 +30,29 @@ export const Counter = () => {
         localStorage.setItem("counter", JSON.stringify(count));
     }, [count]);
 
-    const currentRandomValue = randomRef.current;
+
 
     const counterAdd = () => {
-        if(count < currentRandomValue) {
+        if(count < objectValue.maxValue) {
             setCount(count + 1)
+            console.log(count)
         }
     }
 
     const counterReset = () => {
-        setCount(0)
-        randomRef.current = randomNum
+        setCount(objectValue.startValue)
     }
 
     return (
         <Wrapper>
-
             <Window>
-                <WindowNumber value={count} maxValue={currentRandomValue}>{count}</WindowNumber>
+                <WindowNumber value={count} maxValue={objectValue.maxValue}>{count}</WindowNumber>
             </Window>
 
             <Controllers>
                 <UniversalButton title={"inc"}
                                  onClick={counterAdd}
-                                 isDisabled={count === currentRandomValue}/>
+                                 isDisabled={count === objectValue.maxValue}/>
                 <UniversalButton title={"reset"}
                                  onClick={counterReset}
                                  isDisabled={count === 0}/>
