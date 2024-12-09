@@ -10,7 +10,7 @@ export type ValueType = {
 }
 
 function App() {
-    const [value, setValue] = useState<ValueType>({"startValue": 0, "maxValue": 1})
+    const [value, setValue] = useState<ValueType>({"startValue": 0, "maxValue": 5})
     console.log(value)
 
     return (

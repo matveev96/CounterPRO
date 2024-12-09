@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {Wrapper} from "./universal components/Wrapper";
 import {Window} from "./universal components/Window";
 import {Controllers} from "./universal components/Controllers";
@@ -14,16 +14,32 @@ type SettingsType = {
 export const Settings = ({value, setValue}: SettingsType) => {
 
 
+    const [settings, setSettings] = useState<ValueType>({"startValue": 0, "maxValue": 5})
+
+    // useEffect(() => {
+    //     const valueToString = localStorage.getItem("settings");
+    //     if (valueToString) {
+    //         const valueToNum = JSON.parse(valueToString)
+    //         setSettings(valueToNum)
+    //
+    //     }
+    // }, []);
+    //
+    // useEffect(() => {
+    //     localStorage.setItem("settings", JSON.stringify(settings));
+    // }, [settings]);
+
     const changeValueHandler = (e:ChangeEvent<HTMLInputElement>, inputValue: string) => {
-        setValue({...value, [inputValue]: +(e.currentTarget.value)})
+        setSettings({...settings, [inputValue]: +(e.currentTarget.value)})
     }
 
     let error = false;
-    if(value.startValue >= value.maxValue) {
+    if(settings.startValue >= settings.maxValue) {
         error = true
     }
 
     const onClickHandler = () => {
+        setValue(settings)
 
     }
 
@@ -34,21 +50,21 @@ export const Settings = ({value, setValue}: SettingsType) => {
                         <LabelStyled>
                             max value:
                             <InputStyled type="number"
-                                         value={value.maxValue}
+                                         value={settings.maxValue}
                                          error={error}
                                          onChange={(e:ChangeEvent<HTMLInputElement>) => changeValueHandler( e, "maxValue")}/>
                         </LabelStyled>
                         <LabelStyled>
                             start value:
                             <InputStyled type="number"
-                                         value={value.startValue}
-                                         error={error || value.startValue < 0}
+                                         value={settings.startValue}
+                                         error={error || settings.startValue < 0}
                                          onChange={(e:ChangeEvent<HTMLInputElement>) => changeValueHandler( e, "startValue")}/>
                         </LabelStyled>
                     </ValueWrapper>
                 </Window>
                 <Controllers>
-                    <UniversalButton title={"set"} onClick={onClickHandler} isDisabled={error || value.startValue < 0}/>
+                    <UniversalButton title={"set"} onClick={onClickHandler} isDisabled={error || settings.startValue < 0}/>
                 </Controllers>
             </Wrapper>
     );
