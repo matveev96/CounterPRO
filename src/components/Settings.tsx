@@ -7,14 +7,17 @@ import styled from "styled-components";
 import {ValueType} from "../App";
 
 type SettingsType = {
+    // message: string
+    updateValue: (newValue: ValueType) => void
+    updateCount: (newStart: number) => void
     value: ValueType
-    setValue: (value: ValueType) => void
+    // setMessage: (message:string) => void
 }
 
-export const Settings = ({value, setValue}: SettingsType) => {
+export const Settings = ({updateValue, value, updateCount}: SettingsType) => {
 
 
-    const [settings, setSettings] = useState<ValueType>({"startValue": 0, "maxValue": 5})
+    const [settings, setSettings] = useState<ValueType>(value)
 
     // useEffect(() => {
     //     const valueToString = localStorage.getItem("settings");
@@ -29,18 +32,21 @@ export const Settings = ({value, setValue}: SettingsType) => {
     //     localStorage.setItem("settings", JSON.stringify(settings));
     // }, [settings]);
 
-    const changeValueHandler = (e:ChangeEvent<HTMLInputElement>, inputValue: string) => {
-        setSettings({...settings, [inputValue]: +(e.currentTarget.value)})
-    }
-
     let error = false;
     if(settings.startValue >= settings.maxValue) {
         error = true
     }
 
-    const onClickHandler = () => {
-        setValue(settings)
+    const changeValueHandler = (e:ChangeEvent<HTMLInputElement>, inputValue: string) => {
+        setSettings({...settings, [inputValue]: +(e.currentTarget.value)})
+        // error ? setMessage("incorrect value") : setMessage("enter values and press 'set'")
+    }
 
+
+
+    const onClickHandler = () => {
+        updateValue(settings)
+        updateCount(settings.startValue)
     }
 
     return (

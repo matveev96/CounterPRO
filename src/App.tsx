@@ -11,12 +11,33 @@ export type ValueType = {
 
 function App() {
     const [value, setValue] = useState<ValueType>({"startValue": 0, "maxValue": 5})
-    console.log(value)
+    const [count, setCount] = useState<number>(value.startValue)
+
+    const updateValue = (newValue: ValueType) => {
+        setValue({...value, startValue: newValue.startValue, maxValue: newValue.maxValue})
+    }
+
+    const updateCount = (newStart: number) => {
+        setCount(newStart)
+    }
+
+    const counterAdd = () => {
+        if(count < value.maxValue) {
+            setCount(count + 1)
+        }
+    }
+
+    const counterReset = () => {
+        setCount(value.startValue)
+    }
 
     return (
         <AppStyled>
-            <Settings value={value} setValue={setValue}/>
-            <Counter objectValue={value}/>
+            <Settings updateValue={updateValue} updateCount={updateCount} value={value}/>
+            <Counter startValue={count}
+                     maxValue={value.maxValue}
+                     counterAdd={counterAdd}
+                     counterReset={counterReset}/>
         </AppStyled>
     );
 }
