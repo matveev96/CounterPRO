@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
 import {Wrapper} from "./universal components/Wrapper";
 import {Window} from "./universal components/Window";
 import {Controllers} from "./universal components/Controllers";
@@ -10,11 +10,12 @@ type SettingsType = {
     // message: string
     updateValue: (newValue: ValueType) => void
     updateCount: (newStart: number) => void
+    updateMassage: (newString: string) => void
     value: ValueType
     // setMessage: (message:string) => void
 }
 
-export const Settings = ({updateValue, value, updateCount}: SettingsType) => {
+export const Settings = ({updateValue, value, updateCount, updateMassage}: SettingsType) => {
 
 
     const [settings, setSettings] = useState<ValueType>(value)
@@ -33,46 +34,61 @@ export const Settings = ({updateValue, value, updateCount}: SettingsType) => {
     // }, [settings]);
 
     let error = false;
-    if(settings.startValue >= settings.maxValue) {
+    // let message = ""
+
+    if (settings.startValue >= settings.maxValue) {
         error = true
+        // message = "incorrect value"
+        // updateMassage("incorrect value")
+    } else {
+        // message = "enter values and press 'set'"
+        // updateMassage("enter values and press 'set'")
     }
 
-    const changeValueHandler = (e:ChangeEvent<HTMLInputElement>, inputValue: string) => {
-        setSettings({...settings, [inputValue]: +(e.currentTarget.value)})
-        // error ? setMessage("incorrect value") : setMessage("enter values and press 'set'")
+
+    const changeHandler = (e: ChangeEvent<HTMLInputElement>, inputValue: string) => {
+        let currentVal = +(e.currentTarget.value)
+        setSettings(prevState => ({...prevState, [inputValue]: currentVal}))
+        // updateMassage(message)
     }
 
+    useEffect(() => {
+        if (settings !== value) {
+            settings.startValue >= settings.maxValue ? updateMassage("incorrect value") : updateMassage("enter values and press 'set'")
+        }
+    }, [settings]); // Зависимость: срабатывает, когда `state` изменяется
 
 
     const onClickHandler = () => {
         updateValue(settings)
         updateCount(settings.startValue)
+        updateMassage("")
     }
 
     return (
-            <Wrapper>
-                <Window>
-                    <ValueWrapper>
-                        <LabelStyled>
-                            max value:
-                            <InputStyled type="number"
-                                         value={settings.maxValue}
-                                         error={error}
-                                         onChange={(e:ChangeEvent<HTMLInputElement>) => changeValueHandler( e, "maxValue")}/>
-                        </LabelStyled>
-                        <LabelStyled>
-                            start value:
-                            <InputStyled type="number"
-                                         value={settings.startValue}
-                                         error={error || settings.startValue < 0}
-                                         onChange={(e:ChangeEvent<HTMLInputElement>) => changeValueHandler( e, "startValue")}/>
-                        </LabelStyled>
-                    </ValueWrapper>
-                </Window>
-                <Controllers>
-                    <UniversalButton title={"set"} onClick={onClickHandler} isDisabled={error || settings.startValue < 0}/>
-                </Controllers>
-            </Wrapper>
+        <Wrapper>
+            <Window>
+                <ValueWrapper>
+                    <LabelStyled>
+                        max value:
+                        <InputStyled type="number"
+                                     value={settings.maxValue}
+                                     error={error}
+                                     onChange={(e) => changeHandler(e, "maxValue")}/>
+                    </LabelStyled>
+                    <LabelStyled>
+                        start value:
+                        <InputStyled type="number"
+                                     value={settings.startValue}
+                                     error={error || settings.startValue < 0}
+                                     onChange={(e) => changeHandler(e, "startValue")}/>
+                    </LabelStyled>
+                </ValueWrapper>
+            </Window>
+            <Controllers>
+                <UniversalButton title={"set"} onClick={onClickHandler} isDisabled={error || settings.startValue < 0}/>
+            </Controllers>
+        </Wrapper>
     );
 };
 
@@ -84,10 +100,10 @@ const LabelStyled = styled.label`
     align-items: center;
     justify-content: space-between;
     gap: 40px;
-    
+
 `
 
-const InputStyled = styled.input<{error: boolean}>`
+const InputStyled = styled.input<{ error: boolean }>`
     font-size: 20px;
     font-weight: bold;
     color: cornflowerblue;
