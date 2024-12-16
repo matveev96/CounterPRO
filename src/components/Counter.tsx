@@ -10,18 +10,19 @@ type CounterPropsType = {
     // objectValue: ValueType
     // updateCounter: () => void
     startValue: number,
-    maxValue: number
-    counterReset: () => void
-    counterAdd: () => void
+    maxValue: number,
+    message: string,
+    counterReset: () => void,
+    counterAdd: () => void,
 }
 
 
-export const Counter = ({startValue, maxValue, counterReset, counterAdd}: CounterPropsType) => {
+export const Counter = ({startValue, maxValue, counterReset, counterAdd, message}: CounterPropsType) => {
 
     return (
         <Wrapper>
             <Window>
-                <WindowNumber value={startValue} maxValue={maxValue}>{startValue}</WindowNumber>
+                <WindowNumber value={startValue} maxValue={maxValue}>{message ? message : startValue}</WindowNumber>
             </Window>
 
             <Controllers>
@@ -38,7 +39,7 @@ export const Counter = ({startValue, maxValue, counterReset, counterAdd}: Counte
 
 
 const WindowNumber = styled.span<{ value: number, maxValue: number }>`
-    font-size: 80px;
+    font-size: 40px;
     color: ${props => props.value === props.maxValue ? 'red' : 'cornflowerblue'};
 `
 

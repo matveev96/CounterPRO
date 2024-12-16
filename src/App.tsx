@@ -12,6 +12,8 @@ export type ValueType = {
 function App() {
     const [value, setValue] = useState<ValueType>({"startValue": 0, "maxValue": 5})
     const [count, setCount] = useState<number>(value.startValue)
+    const [message, setMessage] = useState<string>("")
+
 
     const updateValue = (newValue: ValueType) => {
         setValue({...value, startValue: newValue.startValue, maxValue: newValue.maxValue})
@@ -21,9 +23,15 @@ function App() {
         setCount(newStart)
     }
 
+    const updateMassage = (newString: string) => {
+        setMessage(newString)
+    }
+
+    console.log(message)
+
     const counterAdd = () => {
         if(count < value.maxValue) {
-            setCount(count + 1)
+            setCount(count+1)
         }
     }
 
@@ -33,11 +41,14 @@ function App() {
 
     return (
         <AppStyled>
-            <Settings updateValue={updateValue} updateCount={updateCount} value={value}/>
+            <Settings updateValue={updateValue} updateCount={updateCount} updateMassage={updateMassage} value={value}/>
             <Counter startValue={count}
                      maxValue={value.maxValue}
                      counterAdd={counterAdd}
-                     counterReset={counterReset}/>
+                     counterReset={counterReset}
+                     message={message}
+            />
+
         </AppStyled>
     );
 }
