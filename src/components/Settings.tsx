@@ -34,15 +34,9 @@ export const Settings = ({updateValue, value, updateCount, updateMassage}: Setti
     // }, [settings]);
 
     let error = false;
-    // let message = ""
 
     if (settings.startValue >= settings.maxValue) {
         error = true
-        // message = "incorrect value"
-        // updateMassage("incorrect value")
-    } else {
-        // message = "enter values and press 'set'"
-        // updateMassage("enter values and press 'set'")
     }
 
 
@@ -54,9 +48,11 @@ export const Settings = ({updateValue, value, updateCount, updateMassage}: Setti
 
     useEffect(() => {
         if (settings !== value) {
-            settings.startValue >= settings.maxValue ? updateMassage("incorrect value") : updateMassage("enter values and press 'set'")
+            settings.startValue >= settings.maxValue || settings.startValue < 0 ?
+                updateMassage("incorrect value") :
+                updateMassage("enter values and press 'set'")
         }
-    }, [settings]); // Зависимость: срабатывает, когда `state` изменяется
+    }, [settings]);
 
 
     const onClickHandler = () => {
@@ -100,7 +96,6 @@ const LabelStyled = styled.label`
     align-items: center;
     justify-content: space-between;
     gap: 40px;
-
 `
 
 const InputStyled = styled.input<{ error: boolean }>`
