@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import styled from "styled-components";
 
 type ButtonsProps = {
@@ -20,8 +20,8 @@ const ControllersStyled = styled.div`
     border: 3px solid cornflowerblue;
     border-radius: 10px;
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
     align-items: center;
-    gap: 40px;
 `
 

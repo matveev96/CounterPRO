@@ -15,14 +15,15 @@ export const UniversalButton = ({onClick, title, isDisabled}: UniversalButtonPro
 };
 
 const ButtonStyled = styled.button<{disabled: boolean}>`
-    padding: 5px 20px;
-    border: 3px solid cornflowerblue;
+    padding: 5px 40px;
+    border: ${props => props.disabled ? "3px solid #A9A9A9" : "3px solid cornflowerblue"};
     border-radius: 10px;
     background-color: ${props => props.disabled ? "transparent" : "cornflowerblue"};
-    color: azure;
+    color: ${props => props.disabled ? "#A9A9A9" : "azure"};
     cursor: ${props => props.disabled ? "not-allowed": "pointer"};
     font-size: 30px;
+    flex-basis: auto;
     &:active{
-        padding: 3px 15px;
+        transform: ${props => props.disabled ? "none" : "scale(0.9)"};
     }
 `
