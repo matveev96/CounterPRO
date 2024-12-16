@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {Wrapper} from "./universal components/Wrapper";
 import {Window} from "./universal components/Window";
 import {Controllers} from "./universal components/Controllers";
@@ -7,58 +7,42 @@ import styled from "styled-components";
 import {ValueType} from "../App";
 
 type SettingsType = {
-    // message: string
     updateValue: (newValue: ValueType) => void
-    updateCount: (newStart: number) => void
     updateMassage: (newString: string) => void
     value: ValueType
-    // setMessage: (message:string) => void
 }
 
-export const Settings = ({updateValue, value, updateCount, updateMassage}: SettingsType) => {
-
+export const Settings = ({updateValue, value, updateMassage}: SettingsType) => {
 
     const [settings, setSettings] = useState<ValueType>(value)
+    const [isDisabled, setIsDisabled] = useState(false);
 
-    // useEffect(() => {
-    //     const valueToString = localStorage.getItem("settings");
-    //     if (valueToString) {
-    //         const valueToNum = JSON.parse(valueToString)
-    //         setSettings(valueToNum)
-    //
-    //     }
-    // }, []);
-    //
-    // useEffect(() => {
-    //     localStorage.setItem("settings", JSON.stringify(settings));
-    // }, [settings]);
-
-    let error = false;
-
-    if (settings.startValue >= settings.maxValue) {
-        error = true
-    }
-
-
-    const changeHandler = (e: ChangeEvent<HTMLInputElement>, inputValue: string) => {
-        let currentVal = +(e.currentTarget.value)
-        setSettings(prevState => ({...prevState, [inputValue]: currentVal}))
-        // updateMassage(message)
-    }
+    // После перезагрузки страницы данные из localStorage попадают в setValue компоненты App.
+    // Чтобы эти данные отобразились в setSettings использую useEffect
+    useEffect(() => {
+        if (value) {
+            setSettings(value)
+        }
+    }, [value]);
 
     useEffect(() => {
         if (settings !== value) {
             settings.startValue >= settings.maxValue || settings.startValue < 0 ?
-                updateMassage("incorrect value") :
-                updateMassage("enter values and press 'set'")
+                updateMassage("Incorrect value!") :
+                updateMassage("Enter values and press 'set'")
         }
     }, [settings]);
 
+    const changeHandler = (e: ChangeEvent<HTMLInputElement>, inputName: string) => {
+        let inputValue = JSON.parse(e.currentTarget.value)
+        setSettings(prevState => ({...prevState, [inputName]: inputValue}))
+        setIsDisabled(false)
+    }
 
     const onClickHandler = () => {
         updateValue(settings)
-        updateCount(settings.startValue)
         updateMassage("")
+        setIsDisabled(true)
     }
 
     return (
@@ -69,20 +53,24 @@ export const Settings = ({updateValue, value, updateCount, updateMassage}: Setti
                         max value:
                         <InputStyled type="number"
                                      value={settings.maxValue}
-                                     error={error}
+                                     error={settings.startValue >= settings.maxValue}
                                      onChange={(e) => changeHandler(e, "maxValue")}/>
                     </LabelStyled>
                     <LabelStyled>
                         start value:
                         <InputStyled type="number"
                                      value={settings.startValue}
-                                     error={error || settings.startValue < 0}
+                                     error={settings.startValue >= settings.maxValue || settings.startValue < 0}
                                      onChange={(e) => changeHandler(e, "startValue")}/>
                     </LabelStyled>
                 </ValueWrapper>
             </Window>
             <Controllers>
-                <UniversalButton title={"set"} onClick={onClickHandler} isDisabled={error || settings.startValue < 0}/>
+                <UniversalButton title={"set"} onClick={onClickHandler}
+                                 isDisabled={ settings.startValue >= settings.maxValue ||
+                                     settings.startValue < 0 ||
+                                     isDisabled }
+                />
             </Controllers>
         </Wrapper>
     );
