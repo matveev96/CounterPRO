@@ -1,14 +1,11 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import styled from "styled-components";
 import {Controllers} from "./universal components/Controllers";
 import {Window} from "./universal components/Window";
 import {Wrapper} from "./universal components/Wrapper";
 import {UniversalButton} from "./universal components/UniversalButton";
-import {ValueType} from "../App";
 
 type CounterPropsType = {
-    // objectValue: ValueType
-    // updateCounter: () => void
     startValue: number,
     maxValue: number,
     message: string,
@@ -19,28 +16,43 @@ type CounterPropsType = {
 
 export const Counter = ({startValue, maxValue, counterReset, counterAdd, message}: CounterPropsType) => {
 
+
     return (
         <Wrapper>
             <Window>
-                <WindowNumber value={startValue} maxValue={maxValue}>{message ? message : startValue}</WindowNumber>
+                <ViewBox value={startValue} maxValue={maxValue} message={message}>
+                    <span>{message}</span>
+                    <span>{startValue}</span>
+                </ViewBox>
             </Window>
 
             <Controllers>
                 <UniversalButton title={"inc"}
                                  onClick={counterAdd}
-                                 isDisabled={startValue === maxValue}/>
+                                 isDisabled={startValue === maxValue || message !== ""}
+                />
                 <UniversalButton title={"reset"}
                                  onClick={counterReset}
-                                 isDisabled={startValue === 0}/>
+                                 isDisabled={message !== ""}
+                />
             </Controllers>
         </Wrapper>
     );
 };
 
 
-const WindowNumber = styled.span<{ value: number, maxValue: number }>`
-    font-size: 40px;
-    color: ${props => props.value === props.maxValue ? 'red' : 'cornflowerblue'};
+const ViewBox = styled.div<{ value: number, maxValue: number, message: string}>`
+    font-weight: bold;
+    span:first-of-type {
+        font-size: 25px;
+        color: ${props => props.message === "incorrect value" ? "#F08080" : 'cornflowerblue'} ;
+    }
+    span:last-of-type {
+        font-size: 80px;
+        color: ${props => props.value === props.maxValue ? "#F08080" : 'cornflowerblue'};
+        display: ${props => props.message ? 'none' : 'inline'};
+    }
+    
 `
 
 
