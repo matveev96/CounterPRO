@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import styled from "styled-components";
 import {Controllers} from "./universal components/Controllers";
 import {Window} from "./universal components/Window";
@@ -6,31 +6,22 @@ import {Wrapper} from "./universal components/Wrapper";
 import {UniversalButton} from "./universal components/UniversalButton";
 
 type CounterPropsType = {
-    startValue: number,
-    maxValue: number,
+    counterAdd: () => void,
+    counterReset: () => void,
+    count: number
     message: string,
-    // counterReset: () => void,
-    // counterAdd: () => void,
+    maxValue: number
 }
 
 
-export const Counter = ({startValue, maxValue, message}: CounterPropsType) => {
-    const [count, setCount] = useState<number>(startValue)
+export const Counter = ({counterAdd, counterReset, message, count, maxValue}: CounterPropsType) => {
 
-    useEffect(() => {
-        if (startValue) {
-            setCount(startValue)
-        }
-    }, [startValue]);
-
-    const counterAdd = () => {
-        if (count < maxValue) {
-            setCount(count + 1)
-        }
+    const counterAddHandler = () => {
+        counterAdd()
     }
 
-    const counterReset = () => {
-        setCount(startValue)
+    const counterResetHander = () => {
+        counterReset()
     }
 
     return (
@@ -44,11 +35,11 @@ export const Counter = ({startValue, maxValue, message}: CounterPropsType) => {
 
             <Controllers>
                 <UniversalButton title={"inc"}
-                                 onClick={counterAdd}
+                                 onClick={counterAddHandler}
                                  isDisabled={count === maxValue || message !== ""}
                 />
                 <UniversalButton title={"reset"}
-                                 onClick={counterReset}
+                                 onClick={counterResetHander}
                                  isDisabled={message !== ""}
                 />
             </Controllers>

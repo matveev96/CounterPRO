@@ -1,48 +1,33 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import {Wrapper} from "./universal components/Wrapper";
 import {Window} from "./universal components/Window";
 import {Controllers} from "./universal components/Controllers";
 import {UniversalButton} from "./universal components/UniversalButton";
 import styled from "styled-components";
-import {ValueType} from "../App";
 
 type SettingsType = {
-    updateValue: (newValue: ValueType) => void
-    updateMassage: (newString: string) => void
-    value: ValueType
+    updateOnChangeStartValue: (e: ChangeEvent<HTMLInputElement>) => void
+    updateOnChangeMaxValue: (e: ChangeEvent<HTMLInputElement>) => void
+    updateOnClick: () => void
+    numberInputErrorOne: boolean
+    numberInputErrorTwo: boolean
+    startSettings: number
+    maxSettings: number
+    isDisabled: boolean
 }
 
-export const Settings = ({updateValue, value, updateMassage}: SettingsType) => {
-
-    const [settings, setSettings] = useState<ValueType>(value)
-    const [isDisabled, setIsDisabled] = useState(false);
-
-    // После перезагрузки страницы данные из localStorage попадают в setValue компоненты App.
-    // Чтобы эти данные отобразились в setSettings использую useEffect
-    useEffect(() => {
-        if (value) {
-            setSettings(value)
-        }
-    }, [value]);
-
-    useEffect(() => {
-        if (settings !== value) {
-            settings.startValue >= settings.maxValue || settings.startValue < 0 ?
-                updateMassage("Incorrect value!") :
-                updateMassage("Enter values and press 'set'")
-        }
-    }, [settings]);
-
-    const changeHandler = (e: ChangeEvent<HTMLInputElement>, inputName: string) => {
-        let inputValue = JSON.parse(e.currentTarget.value)
-        setSettings(prevState => ({...prevState, [inputName]: inputValue}))
-        setIsDisabled(false)
-    }
+export const Settings = ({updateOnClick, startSettings, maxSettings, updateOnChangeMaxValue, updateOnChangeStartValue, numberInputErrorOne, numberInputErrorTwo, isDisabled}: SettingsType) => {
 
     const onClickHandler = () => {
-        updateValue(settings)
-        updateMassage("")
-        setIsDisabled(true)
+        updateOnClick()
+    }
+
+    const onChangeMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        updateOnChangeMaxValue(e)
+    }
+
+    const onChangeStartValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        updateOnChangeStartValue(e)
     }
 
     return (
@@ -52,23 +37,24 @@ export const Settings = ({updateValue, value, updateMassage}: SettingsType) => {
                     <LabelStyled>
                         max value:
                         <InputStyled type="number"
-                                     value={settings.maxValue}
-                                     error={settings.startValue >= settings.maxValue}
-                                     onChange={(e) => changeHandler(e, "maxValue")}/>
+                                     value={maxSettings}
+                                     error={numberInputErrorOne}
+                                     onChange={onChangeMaxValueHandler}/>
                     </LabelStyled>
                     <LabelStyled>
                         start value:
                         <InputStyled type="number"
-                                     value={settings.startValue}
-                                     error={settings.startValue >= settings.maxValue || settings.startValue < 0}
-                                     onChange={(e) => changeHandler(e, "startValue")}/>
+                                     value={startSettings}
+                                     error={numberInputErrorOne || numberInputErrorTwo}
+                                     onChange={onChangeStartValueHandler}/>
                     </LabelStyled>
                 </ValueWrapper>
             </Window>
             <Controllers>
-                <UniversalButton title={"set"} onClick={onClickHandler}
-                                 isDisabled={ settings.startValue >= settings.maxValue ||
-                                     settings.startValue < 0 ||
+                <UniversalButton title={"set"}
+                                 onClick={onClickHandler}
+                                 isDisabled={ numberInputErrorOne ||
+                                     numberInputErrorTwo ||
                                      isDisabled }
                 />
             </Controllers>
@@ -81,9 +67,10 @@ const LabelStyled = styled.label`
     font-weight: bold;
     color: cornflowerblue;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    gap: 40px;
+    justify-content: space-evenly;
+    gap: 20px;
 `
 
 const InputStyled = styled.input<{ error: boolean }>`
