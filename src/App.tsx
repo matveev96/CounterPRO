@@ -1,24 +1,25 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useReducer, useState} from 'react';
 import './App.css';
 import styled from "styled-components";
 import {Counter} from "./components/Counter";
 import {Settings} from "./components/Settings";
 
+
 function App() {
 
-    const [startValue, setStartValue] = useState<number>(0)
-    const [maxValue, setMaxValue] = useState<number>(5)
+    const [startValue, setStartValue] = useState(0)
+    const [maxValue, setMaxValue] = useState(5)
 
-    const [startSettings, setStartSettings] = useState<number>(startValue)
-    const [maxSettings, setMaxSettings] = useState<number>(maxValue)
+    const [startSettings, setStartSettings] = useState(startValue)
+    const [maxSettings, setMaxSettings] = useState(maxValue)
 
-    const [message, setMessage] = useState<string>("")
-    const [count, setCount] = useState<number>(startValue)
+    const [message, setMessage] = useState("")
+    const [count, setCount] = useState(startValue)
     const [isDisabled, setIsDisabled] = useState(false);
 
     const counterAdd = () => {
         if (count < maxValue) {
-            setCount(count + 1)
+            setCount(prevState=>prevState + 1)
         }
     }
 
@@ -35,6 +36,7 @@ function App() {
         setStartValue(newValue)
         localStorage.setItem("startValue", JSON.stringify(newValue));
     }
+
     const updateMaxValue = (newValue: number) => {
         setMaxValue(newValue)
         localStorage.setItem("maxValue", JSON.stringify(newValue));
@@ -42,10 +44,10 @@ function App() {
 
     const updateOnClick = () => {
         updateStartValue(startSettings)
-        setCount(startSettings)
         updateMaxValue(maxSettings)
         updateMassage("")
         updateDisabled()
+        setCount(startSettings)
     }
 
     const updateOnChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
@@ -55,7 +57,7 @@ function App() {
     }
 
     const updateOnChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
-        const inputValue = +(e.currentTarget.value)
+        const inputValue = + e.currentTarget.value??'0'
         setStartSettings(inputValue)
         setIsDisabled(false)
     }
@@ -79,6 +81,7 @@ function App() {
             setMaxValue(maxValueToObject)
             setMaxSettings(maxValueToObject)
         }
+
         const disabledButtonToString = localStorage.getItem("disabledButton");
         if (disabledButtonToString) {
             const disabledButtonToObject = JSON.parse(disabledButtonToString)
