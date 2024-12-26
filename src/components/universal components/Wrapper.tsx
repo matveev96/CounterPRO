@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from "styled-components";
+import Paper from '@mui/material/Paper';
 
 type WrapperPropsType = {
     children: React.ReactNode;
@@ -7,20 +7,10 @@ type WrapperPropsType = {
 
 export const Wrapper = (props: WrapperPropsType) => {
     return (
-        <WrapperStyled>
+        <Paper elevation={3}
+               sx={{p:'20px',
+               }}>
             {props.children}
-        </WrapperStyled>
+        </Paper>
     );
 };
-
-const WrapperStyled = styled.div`
-    width: 500px;
-    height: 500px;
-    margin: 50px;
-    border: 3px solid cornflowerblue;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-`
