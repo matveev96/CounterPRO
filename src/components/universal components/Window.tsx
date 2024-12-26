@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from "styled-components";
+import Box from "@mui/material/Box";
 
 type WindowProps = {
     children: React.ReactNode;
@@ -7,29 +7,15 @@ type WindowProps = {
 
 export const Window = (props: WindowProps) => {
     return (
-        <WindowStyled>
+        <Box
+            sx={{
+                width: 400,
+                height: 200,
+                borderRadius: 1,
+                bgcolor: 'primary.light'
+            }}
+        >
             {props.children}
-        </WindowStyled>
+        </Box>
     );
 };
-
-const WindowStyled = styled.div`
-    margin-top: 20px;
-    width: 80%;
-    height: 50%;
-    border: 3px solid cornflowerblue;
-    border-radius: 10px;
-    background-color: gainsboro;
-    color: black;
-    font-size: 40px;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-`
-
-
-
-
-
