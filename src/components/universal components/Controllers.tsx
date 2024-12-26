@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from "styled-components";
+import Box from '@mui/material/Box';
 
 type ButtonsProps = {
     children: React.ReactNode;
@@ -7,21 +7,15 @@ type ButtonsProps = {
 
 export const Controllers = (props: ButtonsProps) => {
     return (
-        <ControllersStyled>
+        <Box sx={{
+            margin: '20px 0',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-evenly',
+            alignItems: 'center'
+        }}>
             {props.children}
-        </ControllersStyled>
+        </Box>
     );
 };
-
-const ControllersStyled = styled.div`
-    margin: 20px 0;
-    width: 80%;
-    height: 30%;
-    border: 3px solid cornflowerblue;
-    border-radius: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-items: center;
-`
 
