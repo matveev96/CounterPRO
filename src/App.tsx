@@ -1,8 +1,15 @@
-import React, {ChangeEvent, useEffect, useReducer, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import './App.css';
-import styled from "styled-components";
 import {Counter} from "./components/Counter";
 import {Settings} from "./components/Settings";
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid2';
+import {createTheme, ThemeProvider} from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import {MaterialUISwitch} from "./components/MUISwitchDarkMode";
+
+type ThemeMode = 'dark' | 'light'
 
 
 function App() {
@@ -19,7 +26,7 @@ function App() {
 
     const counterAdd = () => {
         if (count < maxValue) {
-            setCount(prevState=>prevState + 1)
+            setCount(prevState => prevState + 1)
         }
     }
 
@@ -57,7 +64,7 @@ function App() {
     }
 
     const updateOnChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
-        const inputValue = + e.currentTarget.value??'0'
+        const inputValue = +e.currentTarget.value ?? '0'
         setStartSettings(inputValue)
         setIsDisabled(false)
     }
@@ -99,7 +106,7 @@ function App() {
     }
 
     useEffect(() => {
-        if (startSettings !== startValue ) {
+        if (startSettings !== startValue) {
             messageToggle()
         }
     }, [startSettings]);
@@ -110,35 +117,77 @@ function App() {
         }
     }, [maxSettings]);
 
+    const [themeMode, setThemeMode] = useState<ThemeMode>('light')
+
+    const changeModeHandler = () => {
+        setThemeMode(themeMode === 'light' ? 'dark' : 'light')
+    }
+
+    const theme = createTheme({
+        palette: {
+            mode: themeMode === 'light' ? 'light' : 'dark',
+                primary: {
+                    main: themeMode === 'light' ? '#66bb6a' : '#388e3c',
+                    contrastText: themeMode === 'light' ? '#000' : '#f5f5f5'
+                },
+                secondary: {
+                    main: themeMode === 'light' ? '#7986cb' : '#455a64',
+                    contrastText: themeMode === 'light' ? '#26a69a' : '#00695c'
+                },
+            background: {
+                paper: themeMode === 'light' ? '#e0e0e0' : '#424242',
+                default: themeMode === 'light' ? '#e0e0e0' : '#424242',
+            },
+            error: {
+                main: '#f44336'
+            }
+        },
+    })
+
     return (
-        <AppStyled>
-            <Settings updateOnClick={updateOnClick}
-                      updateOnChangeMaxValue={updateOnChangeMaxValue}
-                      updateOnChangeStartValue={updateOnChangeStartValue}
-                      numberInputErrorOne={numberInputErrorOne}
-                      numberInputErrorTwo={numberInputErrorTwo}
-                      startSettings={startSettings}
-                      maxSettings={maxSettings}
-                      isDisabled={isDisabled}
-            />
-            <Counter counterAdd={counterAdd}
-                     counterReset={counterReset}
-                     count={count}
-                     maxValue={maxValue}
-                     message={message}
-            />
-        </AppStyled>
+        <ThemeProvider theme={theme}>
+            <FormControlLabel control={<MaterialUISwitch onClick={changeModeHandler}/>}
+                              label={`Dark mode ${themeMode === 'light' ? 'off' : 'on'}`}
+                              sx={{m: '20px'}}/>
+            <CssBaseline/>
+            <Container fixed
+                       color={'primary'}
+                       sx={{
+                           position: 'absolute',
+                           top: 0,
+                           bottom: 0,
+                           right: 0,
+                           left: 0,
+                           alignContent: "center"
+                       }}
+            >
+                <Grid container
+                      spacing={5}
+                      columns={2}
+                      sx={{
+                          justifyContent: "center",
+                      }}
+                >
+                    <Settings updateOnClick={updateOnClick}
+                              updateOnChangeMaxValue={updateOnChangeMaxValue}
+                              updateOnChangeStartValue={updateOnChangeStartValue}
+                              numberInputErrorOne={numberInputErrorOne}
+                              numberInputErrorTwo={numberInputErrorTwo}
+                              startSettings={startSettings}
+                              maxSettings={maxSettings}
+                              isDisabled={isDisabled}
+                    />
+                    <Counter counterAdd={counterAdd}
+                             counterReset={counterReset}
+                             count={count}
+                             maxValue={maxValue}
+                             message={message}
+                    />
+                </Grid>
+            </Container>
+        </ThemeProvider>
     );
 }
 
-const AppStyled = styled.div`
-    text-align: center;
-    display: flex;
-    flex-wrap: wrap;
-    height: 100%;
-    justify-content: space-evenly;
-    align-items: center;
-    background-color: dimgrey;
-`
 
 export default App;
