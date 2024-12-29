@@ -1,5 +1,5 @@
 import React from 'react';
-import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
 
 type WindowProps = {
     children: React.ReactNode;
@@ -7,15 +7,20 @@ type WindowProps = {
 
 export const Window = (props: WindowProps) => {
     return (
-        <Box
+        <Paper
+            variant="outlined"
             sx={{
                 width: 400,
                 height: 200,
                 borderRadius: 1,
-                bgcolor: 'primary.light'
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
             }}
+
         >
             {props.children}
-        </Box>
+        </Paper>
     );
 };

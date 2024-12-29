@@ -9,6 +9,7 @@ export const Wrapper = (props: WrapperPropsType) => {
     return (
         <Paper elevation={3}
                sx={{p:'20px',
+                   bgcolor: 'secondary.main'
                }}>
             {props.children}
         </Paper>
