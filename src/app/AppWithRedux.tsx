@@ -120,28 +120,43 @@ function App() {
         dispatch(setMessageAC(newString))
     }
 
-    // useEffect(() => {
-    //     const startValueToString = localStorage.getItem("startValue");
-    //     if (startValueToString) {
-    //         const startValueToObject = JSON.parse(startValueToString)
-    //         setStartValue(startValueToObject)
-    //         setStartSettings(startValueToObject)
-    //         setCount(startValueToObject)
-    //     }
-    //
-    //     const maxValueToString = localStorage.getItem("maxValue");
-    //     if (maxValueToString) {
-    //         const maxValueToObject = JSON.parse(maxValueToString)
-    //         setMaxValue(maxValueToObject)
-    //         setMaxSettings(maxValueToObject)
-    //     }
-    //
-    //     const disabledButtonToString = localStorage.getItem("disabledButton");
-    //     if (disabledButtonToString) {
-    //         const disabledButtonToObject = JSON.parse(disabledButtonToString)
-    //         setIsDisabled(disabledButtonToObject)
-    //     }
-    // }, []);
+    const changeModeHandler = () => {
+        const darkMode = themeMode === 'light' ? 'dark' : 'light'
+        localStorage.setItem("themeMode", JSON.stringify(darkMode));
+        dispatch(setThemeModeAC(darkMode))
+    }
+
+    useEffect(() => {
+        const startValueToString = localStorage.getItem("startValue");
+        if (startValueToString) {
+            const startValueToObject = JSON.parse(startValueToString)
+            // setStartValue(startValueToObject)
+            // setStartSettings(startValueToObject)
+            // setCount(startValueToObject)
+            dispatch(setStartValueAC(startValueToObject))
+        }
+
+        const maxValueToString = localStorage.getItem("maxValue");
+        if (maxValueToString) {
+            const maxValueToObject = JSON.parse(maxValueToString)
+            dispatch(setMaxValueAC(maxValueToObject))
+            // setMaxValue(maxValueToObject)
+            // setMaxSettings(maxValueToObject)
+        }
+
+        const disabledButtonToString = localStorage.getItem("disabledButton");
+        if (disabledButtonToString) {
+            const disabledButtonToObject = JSON.parse(disabledButtonToString)
+            dispatch(setIsDisabledAC(disabledButtonToObject))
+            // setIsDisabled(disabledButtonToObject)
+        }
+
+        const themeModeToString = localStorage.getItem("themeMode");
+        if (themeModeToString) {
+            const themeModeToObject = JSON.parse(themeModeToString)
+            dispatch(setThemeModeAC(themeModeToObject))
+        }
+    }, []);
 
     const numberInputErrorOne = startSettings >= maxSettings
     const numberInputErrorTwo = startSettings < 0
@@ -163,13 +178,6 @@ function App() {
             messageToggle()
         }
     }, [maxSettings]);
-
-
-
-    const changeModeHandler = () => {
-        // setThemeMode(themeMode === 'light' ? 'dark' : 'light')
-        dispatch(setThemeModeAC())
-    }
 
     const theme = createTheme({
         palette: {
