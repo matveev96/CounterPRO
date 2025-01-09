@@ -1,4 +1,4 @@
-import {CounterType} from "../app/AppWithRedux";
+import {CounterType, ThemeMode} from "../app/AppWithRedux";
 
 const initialState: CounterType = {
     startValue: 0,
@@ -23,10 +23,9 @@ export const appReducer = (state: CounterType = initialState, action: ActionType
             }
         }
         case "SET_START_SETTINGS": {
-            const newValue = action.payload.newValue
             return {
                 ...state,
-                startSettings: newValue,
+                startSettings: action.payload.newValue,
             }
         }
         case "SET_MAX_VALUE": {
@@ -38,10 +37,9 @@ export const appReducer = (state: CounterType = initialState, action: ActionType
             }
         }
         case "SET_MAX_SETTINGS": {
-            const newValue = action.payload.newMaxValue
             return {
                 ...state,
-                maxSettings: newValue
+                maxSettings: action.payload.newMaxValue
             }
         }
         case "SET_RESET_COUNT": {
@@ -71,7 +69,7 @@ export const appReducer = (state: CounterType = initialState, action: ActionType
         case "SET_THEME_MODE": {
             return {
                 ...state,
-                themeMode: state.themeMode === 'light' ? 'dark' : 'light'
+                themeMode: action.payload.darkMode
             }
         }
         default:
@@ -153,10 +151,13 @@ export const setIsDisabledAC = (bool: boolean) => {
         } as const)
 }
 
-export const setThemeModeAC = () => {
+export const setThemeModeAC = (darkMode: ThemeMode) => {
     return (
         {
-            type: 'SET_THEME_MODE'
+            type: 'SET_THEME_MODE',
+            payload: {
+                darkMode
+            }
         } as const)
 }
 
