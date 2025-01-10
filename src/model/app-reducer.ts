@@ -14,12 +14,9 @@ const initialState: CounterType = {
 export const appReducer = (state: CounterType = initialState, action: ActionType): CounterType => {
     switch (action.type) {
         case "SET_START_VALUE": {
-            const newValue = action.payload.newValue
             return {
                 ...state,
-                startValue: newValue,
-                startSettings: newValue,
-                count: newValue
+                startValue: action.payload.newValue,
             }
         }
         case "SET_START_SETTINGS": {
@@ -29,11 +26,9 @@ export const appReducer = (state: CounterType = initialState, action: ActionType
             }
         }
         case "SET_MAX_VALUE": {
-            const newValue = action.payload.newMaxValue
             return {
                 ...state,
-                maxValue: newValue,
-                maxSettings: newValue
+                maxValue: action.payload.newMaxValue,
             }
         }
         case "SET_MAX_SETTINGS": {
@@ -42,16 +37,10 @@ export const appReducer = (state: CounterType = initialState, action: ActionType
                 maxSettings: action.payload.newMaxValue
             }
         }
-        case "SET_RESET_COUNT": {
+        case "SET_COUNT": {
             return {
                 ...state,
-                count: state.startValue
-            }
-        }
-        case "SET_ADD_COUNT": {
-            return {
-                ...state,
-                count: state.count + 1
+                count: action.payload.newCount
             }
         }
         case "SET_MESSAGE": {
@@ -86,7 +75,6 @@ export const setStartValueAC = (newValue: number) => {
             }
         } as const)
 }
-
 export const setStartSettingsAC = (newValue: number) => {
     return (
         {
@@ -96,7 +84,6 @@ export const setStartSettingsAC = (newValue: number) => {
             }
         } as const)
 }
-
 export const setMaxValueAC = (newMaxValue: number) => {
     return (
         {
@@ -106,7 +93,6 @@ export const setMaxValueAC = (newMaxValue: number) => {
             }
         } as const)
 }
-
 export const setMaxSettingsAC = (newMaxValue: number) => {
     return (
         {
@@ -116,21 +102,15 @@ export const setMaxSettingsAC = (newMaxValue: number) => {
             }
         } as const)
 }
-
-export const setResetCounterAC = () => {
+export const setCountAC = (newCount: number) => {
     return (
         {
-            type: 'SET_RESET_COUNT'
+            type: 'SET_COUNT',
+            payload: {
+                newCount
+            }
         } as const)
 }
-
-export const setAddCounterAC = () => {
-    return (
-        {
-            type: 'SET_ADD_COUNT'
-        } as const)
-}
-
 export const setMessageAC = (newString: string) => {
     return (
         {
@@ -140,7 +120,6 @@ export const setMessageAC = (newString: string) => {
             }
         } as const)
 }
-
 export const setIsDisabledAC = (bool: boolean) => {
     return (
         {
@@ -150,7 +129,6 @@ export const setIsDisabledAC = (bool: boolean) => {
             }
         } as const)
 }
-
 export const setThemeModeAC = (darkMode: ThemeMode) => {
     return (
         {
@@ -161,25 +139,21 @@ export const setThemeModeAC = (darkMode: ThemeMode) => {
         } as const)
 }
 
-
 type setStartValueAT = ReturnType<typeof setStartValueAC>
 type setStartSettingsAT = ReturnType<typeof setStartSettingsAC>
 type setMaxValueAT = ReturnType<typeof setMaxValueAC>
 type setMaxSettingsAT = ReturnType<typeof setMaxSettingsAC>
-type setResetCounterAT = ReturnType<typeof setResetCounterAC>
 type setMessageAT = ReturnType<typeof setMessageAC>
 type setIsDisabledAT = ReturnType<typeof setIsDisabledAC>
 type setThemeModeAT = ReturnType<typeof setThemeModeAC>
-type setAddCounterAT = ReturnType<typeof setAddCounterAC>
-
+type setCountAT = ReturnType<typeof setCountAC>
 
 type ActionType =
     setStartValueAT
     | setStartSettingsAT
     | setMaxValueAT
     | setMaxSettingsAT
-    | setResetCounterAT
     | setMessageAT
     | setIsDisabledAT
     | setThemeModeAT
-    | setAddCounterAT
+    | setCountAT
