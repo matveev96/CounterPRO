@@ -1,5 +1,4 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import './App.css';
 import {Counter} from "./components/Counter";
 import {Settings} from "./components/Settings";
 import Container from '@mui/material/Container'
@@ -11,8 +10,7 @@ import {MaterialUISwitch} from "./components/MUISwitchDarkMode";
 
 type ThemeMode = 'dark' | 'light'
 
-
-function App() {
+function AppUseState() {
 
     const [startValue, setStartValue] = useState(0)
     const [maxValue, setMaxValue] = useState(5)
@@ -192,4 +190,4 @@ function App() {
 }
 
 
-export default App;
+export default AppUseState;
