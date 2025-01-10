@@ -1,5 +1,4 @@
 import React, {ChangeEvent, useEffect} from 'react';
-import './App.css';
 import {Counter} from "../components/Counter";
 import {Settings} from "../components/Settings";
 import Container from '@mui/material/Container'
@@ -10,10 +9,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import {MaterialUISwitch} from "../components/MUISwitchDarkMode";
 import {RootState} from "./store";
 import {
-    setAddCounterAC,
+    setCountAC,
     setIsDisabledAC, setMaxSettingsAC,
-    setMaxValueAC, setMessageAC,
-    setResetCounterAC, setStartSettingsAC,
+    setMaxValueAC, setMessageAC, setStartSettingsAC,
     setStartValueAC, setThemeModeAC
 } from "../model/app-reducer";
 import {useAppDispatch, useAppSelector} from "./hooks";
@@ -48,123 +46,48 @@ function App() {
 
     const dispatch = useAppDispatch()
 
-    // const [startValue, setStartValue] = useState(0)
-    // const [maxValue, setMaxValue] = useState(5)
-    //
-    // const [startSettings, setStartSettings] = useState(startValue)
-    // const [maxSettings, setMaxSettings] = useState(maxValue)
-    //
-    // const [message, setMessage] = useState("")
-    // const [count, setCount] = useState(startValue)
-    // const [isDisabled, setIsDisabled] = useState(false);
-    //
-    // const [themeMode, setThemeMode] = useState<ThemeMode>('light')
-
     const counterAdd = () => {
         if (count < maxValue) {
-            // setCount(prevState => prevState + 1)
-            dispatch(setAddCounterAC())
+            dispatch(setCountAC(count + 1))
         }
     }
 
     const counterReset = () => {
-        // setCount(startValue)
-        dispatch(setResetCounterAC())
-    }
-
-    const updateDisabled = () => {
-        // setIsDisabled(true)
-        dispatch(setIsDisabledAC(true))
-        localStorage.setItem("disabledButton", JSON.stringify(true));
-    }
-
-    const updateStartValue = (newValue: number) => {
-        // setStartValue(newValue)
-        dispatch(setStartValueAC(newValue))
-        localStorage.setItem("startValue", JSON.stringify(newValue));
-
-    }
-
-    const updateMaxValue = (newValue: number) => {
-        // setMaxValue(newValue)
-        dispatch(setMaxValueAC(newValue))
-        localStorage.setItem("maxValue", JSON.stringify(newValue));
+        dispatch(setCountAC(startValue))
     }
 
     const updateOnClick = () => {
-        updateStartValue(startSettings)
-        updateMaxValue(maxSettings)
-        updateMassage("")
-        updateDisabled()
-        // setCount(startSettings)
+        dispatch(setIsDisabledAC(true))
+        dispatch(setStartValueAC(startSettings))
+        dispatch(setMaxValueAC(maxSettings))
+        dispatch(setMessageAC(""))
+        dispatch(setCountAC(startSettings))
     }
 
     const updateOnChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
         const inputValue = +e.currentTarget.value
-        // setMaxSettings(inputValue)
-        // setIsDisabled(false)
         dispatch(setMaxSettingsAC(inputValue))
         dispatch(setIsDisabledAC(false))
     }
 
     const updateOnChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
         const inputValue = +e.currentTarget.value ?? '0'
-        // setStartSettings(inputValue)
-        // setIsDisabled(false)
         dispatch(setStartSettingsAC(inputValue))
         dispatch(setIsDisabledAC(false))
     }
 
-    const updateMassage = (newString: string) => {
-        // setMessage(newString)
-        dispatch(setMessageAC(newString))
-    }
-
     const changeModeHandler = () => {
         const darkMode = themeMode === 'light' ? 'dark' : 'light'
-        localStorage.setItem("themeMode", JSON.stringify(darkMode));
         dispatch(setThemeModeAC(darkMode))
     }
-
-    useEffect(() => {
-        const startValueToString = localStorage.getItem("startValue");
-        if (startValueToString) {
-            const startValueToObject = JSON.parse(startValueToString)
-            // setStartValue(startValueToObject)
-            // setStartSettings(startValueToObject)
-            // setCount(startValueToObject)
-            dispatch(setStartValueAC(startValueToObject))
-        }
-
-        const maxValueToString = localStorage.getItem("maxValue");
-        if (maxValueToString) {
-            const maxValueToObject = JSON.parse(maxValueToString)
-            dispatch(setMaxValueAC(maxValueToObject))
-            // setMaxValue(maxValueToObject)
-            // setMaxSettings(maxValueToObject)
-        }
-
-        const disabledButtonToString = localStorage.getItem("disabledButton");
-        if (disabledButtonToString) {
-            const disabledButtonToObject = JSON.parse(disabledButtonToString)
-            dispatch(setIsDisabledAC(disabledButtonToObject))
-            // setIsDisabled(disabledButtonToObject)
-        }
-
-        const themeModeToString = localStorage.getItem("themeMode");
-        if (themeModeToString) {
-            const themeModeToObject = JSON.parse(themeModeToString)
-            dispatch(setThemeModeAC(themeModeToObject))
-        }
-    }, []);
 
     const numberInputErrorOne = startSettings >= maxSettings
     const numberInputErrorTwo = startSettings < 0
 
     const messageToggle = () => {
         numberInputErrorOne || numberInputErrorTwo ?
-            updateMassage("Incorrect value!") :
-            updateMassage("Enter values and press 'set'")
+            dispatch(setMessageAC("Incorrect value!")) :
+            dispatch(setMessageAC("Enter values and press 'set'"))
     }
 
     useEffect(() => {
