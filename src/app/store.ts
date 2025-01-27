@@ -1,27 +1,25 @@
-import { combineReducers, legacy_createStore as createStore } from 'redux'
-import {appReducer} from "../model/app-reducer";
+import {appReducer} from "../features/counter/model/app-reducer";
 import {loadState, saveState} from "./localStorage";
+import {combineReducers, configureStore} from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
-     counter: appReducer,
+    counter: appReducer,
 })
 
-const persistedState = loadState();
+const preloadedState = loadState();
 
-export const store = createStore(
-    rootReducer,
-    persistedState
-)
+export const store = configureStore({
+    reducer: rootReducer,
+    preloadedState
+})
 
 store.subscribe(() => {
-     saveState({
-          counter: store.getState().counter
-     })
+    saveState({
+        counter: store.getState().counter
+    })
 })
 
 export type RootState = ReturnType<typeof store.getState>
 
 export type AppDispatch = typeof store.dispatch
 
-// @ts-ignore
-window.store = store
