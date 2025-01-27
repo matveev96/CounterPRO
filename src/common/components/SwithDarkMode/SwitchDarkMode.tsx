@@ -1,6 +1,6 @@
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {setThemeModeAC} from "../../../features/counter/model/app-reducer";
+import {setThemeModeAC} from "../../../features/counter/model/counter-reducer";
 import {selectCounter} from "../../../features/counter/model/app-selectors";
 import {MaterialUISwitch} from "./MUISwitchDarkMode";
 import React from "react";

@@ -4,7 +4,7 @@ import {Window} from "../../../../common/components/Window/Window";
 import {Wrapper} from "../../../../common/components/Wrapper/Wrapper";
 import {Button, Typography} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-import {setCountAC} from "../../model/app-reducer";
+import {setCountAC} from "../../model/counter-reducer";
 import {selectCounter} from "../../model/app-selectors";
 
 export const Counter = () => {

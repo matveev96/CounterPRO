@@ -20,7 +20,7 @@ export const setMessageAC = createAction<{ newString: string }>('counter/message
 export const setIsDisabledAC = createAction<{ bool: boolean }>('counter/isDisabled')
 export const setThemeModeAC = createAction<{ darkMode: ThemeMode }>('counter/themeMode')
 
-export const appReducer = createReducer(initialState, builder => {
+export const counterReducer = createReducer(initialState, builder => {
     builder
         .addCase(setStartValueAC, (state, action) => {
             state.startValue = action.payload.newValue

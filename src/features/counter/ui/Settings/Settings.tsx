@@ -12,7 +12,7 @@ import {
     setMaxValueAC,
     setMessageAC, setStartSettingsAC,
     setStartValueAC
-} from "../../model/app-reducer";
+} from "../../model/counter-reducer";
 
 export const Settings = () => {
 

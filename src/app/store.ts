@@ -1,9 +1,9 @@
-import {appReducer} from "../features/counter/model/app-reducer";
+import {counterReducer} from "../features/counter/model/counter-reducer";
 import {loadState, saveState} from "./localStorage";
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
-    counter: appReducer,
+    counter: counterReducer,
 })
 
 const preloadedState = loadState();
