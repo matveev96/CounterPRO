@@ -5,6 +5,7 @@
 * TypeScript
 * React
 * Redux
+* RTK
 * MaterialUI
 
 ![img.png](img.png)
