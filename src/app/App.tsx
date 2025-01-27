@@ -4,7 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import {useAppSelector} from "./hooks";
 import {getTheme} from "../common/theme/theme";
 import {Main} from "./Main";
-import {selectCounter} from "../features/counter/model/app-selectors";
+import {selectCounter} from "../features/counter/model/counter-selectors";
 
 
 function App() {

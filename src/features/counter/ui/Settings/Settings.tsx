@@ -4,7 +4,7 @@ import {Window} from "../../../../common/components/Window/Window";
 import {Controllers} from "../../../../common/components/Controllers/Controllers";
 import {Button, TextField} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-import {selectCounter} from "../../model/app-selectors";
+import {selectCounter} from "../../model/counter-selectors";
 import {
     setCountAC,
     setIsDisabledAC,
