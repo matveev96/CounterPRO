@@ -1,4 +1,3 @@
-import {CounterType, ThemeMode} from "../app/AppWithRedux";
 import {createAction, createReducer} from "@reduxjs/toolkit";
 
 const initialState: CounterType = {
@@ -48,3 +47,16 @@ export const appReducer = createReducer(initialState, builder => {
             state.themeMode = action.payload.darkMode
         })
 })
+
+export type ThemeMode = 'dark' | 'light'
+
+export type CounterType = {
+    startValue: number
+    maxValue: number
+    startSettings: number
+    maxSettings: number
+    count: number
+    message: string
+    isDisabled: boolean
+    themeMode: ThemeMode
+}
