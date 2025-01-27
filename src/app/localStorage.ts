@@ -1,4 +1,3 @@
-import {CounterType} from "./AppWithRedux";
 import {RootState} from "./store";
 
 export const loadState = () => {
